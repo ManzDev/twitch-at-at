@@ -1,0 +1,524 @@
+:root {
+  --width: 450px;
+  --height: 425px;
+  --bgcolor: grey;
+  --loop-shoot-time: 8s;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  margin-top: 1em;
+}
+
+.at-at {
+  width: var(--width);
+  height: var(--height);
+  display: flex;
+  position: relative;
+
+  & .body-container {
+    display: grid;
+    grid-template-areas: "left center right" "axis-front bottom axis-back";
+    justify-content: center;
+    width: 250px;
+    height: 150px;
+
+    & .body-left {
+      width: 60px;
+      height: 115px;
+      background: var(--bgcolor);
+      grid-area: left;
+      clip-path: polygon(0 30%, 100% 10%, 100% 100%, 0 100%);
+      border-right: 1px solid #777;
+    }
+
+    & .body-center {
+      width: 107px;
+      height: 115px;
+      background: var(--bgcolor);
+      grid-area: center;
+      clip-path: polygon(0 10%, 10% 0, 95% 0, 100% 5%, 100% 100%, 0 100%);
+      position: relative;
+
+      & .border {
+        height: 100%;
+        position: absolute;
+      }
+
+      & .border.left {
+        background: #aaa;
+        width: 10px;
+        left: 0;
+      }
+
+      & .border.right {
+        background: linear-gradient(to right, #222 0 40%, #444 60%);
+        width: 5px;
+        right: 0;
+      }
+    }
+
+    & .body-right {
+      width: 83px;
+      height: 115px;
+      background: var(--bgcolor);
+      grid-area: right;
+      clip-path: polygon(0 5%, 90% 40%, 100% 100%, 0 100%);
+    }
+
+    & .body-bottom {
+      width: 100px;
+      height: 35px;
+      background: #444;
+      box-shadow: 0 4px 6px #222 inset;
+      grid-area: bottom;
+      clip-path: polygon(5% 0, 5% 20%, 20% 35%, 35% 70%, 75% 70%, 100% 0);
+    }
+
+    & .axis {
+      width: 80px;
+      height: 40px;
+      background: #999;
+      border-radius: 200px 120px 120px 200px / 100px 100px 100px 100px;
+      position: absolute;
+
+      &::after {
+        content: "";
+        display: block;
+        width: 30px;
+        height: 30px;
+        background: #666;
+        border: 4px solid #555;
+        border-radius: 50%;
+      }
+    }
+
+    & .axis-container {
+      z-index: -10;
+    }
+
+    & .axis-container.front {
+      grid-area: axis-front;
+      transform: scaleX(-1) translate(-25px, -15px);
+    }
+
+    & .axis-container.back {
+      grid-area: axis-back;
+      transform: translate(-25px, -15px);
+    }
+
+    & .body-back {
+      width: 64px;
+      height: 64px;
+      background: #555;
+      position: absolute;
+      z-index: -10;
+      right: -40px;
+      bottom: 0;
+      clip-path: polygon(0 0, 80% 20%, 100% 80%, 0 100%);
+
+      &::before {
+        content: "";
+        display: block;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        background: repeating-linear-gradient(to right, #333 10%, #444 20%);
+        position: absolute;
+        bottom: -3px;
+        right: 18px;
+      }
+    }
+  }
+
+  & .front-container {
+    width: 150px;
+    height: 85px;
+    transform: translateY(50px);
+    position: relative;
+
+    & .head-container {
+      & .front {
+        width: 25px;
+        height: 25px;
+        background: #888;
+        position: absolute;
+        left: -15px;
+        top: 20px;
+        clip-path: polygon(100% 0, 100% 100%, 25% 80%, 40% 20%);
+      }
+
+      & .head {
+        width: 110px;
+        height: 65px;
+        background: #999;
+        position: relative;
+        z-index: 5;
+        clip-path: polygon(10% 20%, 95% 10%, 100% 100%, 0 100%);
+      }
+
+      & .head-bottom {
+        width: 90px;
+        height: 20px;
+        background: #444;
+        position: relative;
+        left: 20px;
+        clip-path: polygon(7px 0, 98% 0, 100% 50%, 64% 48%, 45% 100%, 18% 100%);
+      }
+    }
+
+    & .eye-container {
+      display: flex;
+      justify-content: flex-end;
+      width: 75px;
+      height: 40px;
+      position: absolute;
+      top: 20px;
+      left: -20px;
+      z-index: 15;
+
+      & .eye {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: #777;
+      }
+
+      & .small-cannon {
+        position: absolute;
+        bottom: 0;
+        transform: translate(-15px, -20px);
+        display: none;
+
+        &::before {
+          content: "";
+          display: block;
+          width: 15px;
+          height: 3px;
+          background: #888;
+        }
+
+        &::after {
+          content: "";
+          display: block;
+          background: #555;
+          width: 10px;
+          height: 3px;
+          transform: translate(5px, 0);
+        }
+      }
+
+      & .cannon {
+        width: 65px;
+        height: 3px;
+        background: #666;
+        position: absolute;
+        right: 13px;
+        bottom: 12px;
+        z-index: 15;
+
+        &::after {
+          content: "";
+          display: block;
+          width: 15px;
+          height: 10px;
+          background: #555;
+          position: absolute;
+          right: 0;
+          transform: translateY(-3px) rotate(-9deg);
+        }
+      }
+    }
+
+    & .neck {
+      width: 60px;
+      height: 55px;
+      background: #555;
+      position: absolute;
+      right: 0;
+      top: 10px;
+
+      &::after {
+        content: "";
+        display: block;
+        background: #444;
+        width: 100%;
+        height: 100%;
+        clip-path: polygon(0 0, 25% 0, 100% 100%, 0 100%);
+      }
+    }
+
+    & .cannon-container {
+      width: 125px;
+      height: 25px;
+      position: relative;
+      top: -20px;
+      left: -50px;
+      z-index: -10;
+      animation: shoot var(--loop-shoot-time) ease-in infinite;
+
+      & .laser {
+        content: "";
+        display: block;
+        height: 5px;
+        width: 200px;
+        background: #fff;
+        position: absolute;
+        top: 1px;
+        right: 125px;
+        box-shadow: 0 0 4px 1px red;
+        animation: laserShow var(--loop-shoot-time) steps(1) infinite;
+      }
+
+      & .front-cannon {
+        width: 120px;
+        height: 7px;
+        background: #333;
+        position: relative;
+      }
+
+      & .charger-container {
+        & .charger {
+          width: 60px;
+          height: 5px;
+          background: #222;
+          transform: translateX(60px);
+        }
+
+        & .charger-2 {
+          transform: translateX(65px);
+        }
+      }
+
+      & .base-cannon {
+        width: 25px;
+        height: 25px;
+        border-radius: 50%;
+        background: #333;
+        position: absolute;
+        top: 0;
+        right: -10px;
+      }
+    }
+  }
+
+  & .legs-container {
+    width: 325px;
+    height: 300px;
+    position: absolute;
+    z-index: -10;
+    bottom: 0;
+    right: 20px;
+
+    & .foot-container {
+      position: absolute;
+      transform: rotate(var(--foot-rotate, 0));
+
+      & .part-2 {
+        transform: rotate(var(--knee-rotate, 0));
+      }
+    }
+
+    & .foot-1 {
+      left: 45px;
+      filter: brightness(75%);
+    }
+
+    & .foot-2 {
+      left: 50px;
+    }
+
+    & .foot-3 {
+      right: 55px;
+      filter: brightness(75%);
+    }
+
+    & .foot-4 {
+      right: 60px;
+    }
+  }
+
+  & .foot-container {
+    width: 60px;
+    height: 250px;
+    position: absolute;
+    transform-origin: 50% 0;
+
+    & .control-circle {
+      width: 40px;
+      height: 40px;
+      background: #444;
+      border-radius: 50%;
+      margin: auto;
+    }
+
+    & .part-1 {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      & .pre-leg {
+        width: 40px;
+        height: 55px;
+        background: #888;
+        position: relative;
+        transform: translateY(-25px);
+        z-index: -10;
+      }
+
+      & .leg {
+        width: 35px;
+        height: 55px;
+        background: #888;
+        transform: translateY(-22px);
+      }
+    }
+
+    & .part-2 {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      top: -35px;
+      transform-origin: 50% 0;
+
+      & .control-circle.small {
+        width: 32px;
+        height: 32px;
+      }
+
+      & .post-leg {
+        width: 35px;
+        height: 55px;
+        background: #888;
+        transform: translateY(-10px);
+        z-index: -10;
+      }
+
+      & .polygon-top {
+        width: 50px;
+        height: 25px;
+        background: #888;
+        transform: translateY(-7px);
+        clip-path: polygon(0 50%, 15% 0, 85% 0, 100% 50%);
+      }
+
+      & .polygon-bottom {
+        width: 50px;
+        height: 30px;
+        background: #666;
+        transform: translateY(-35px);
+        clip-path: polygon(100% 50%, 85% 100%, 15% 100%, 0 50%);
+      }
+
+      & .semicircle-container {
+        width: 65px;
+        height: 65px;
+        position: relative;
+        transform: translateY(-55px);
+        z-index: -10;
+
+        & .semiarc {
+          box-sizing: border-box;
+          width: 100%;
+          height: 100%;
+          border-radius: 50%;
+          border: 10px solid #444;
+          position: absolute;
+          clip-path: polygon(0 0, 100% 0, 100% 50%, 0 50%);
+        }
+
+        & .cross {
+          width: 100%;
+          height: 100%;
+
+          & .vertical {
+            width: 4px;
+            height: 24px;
+            background: #333;
+            position: absolute;
+            top: 0;
+            left: 47%;
+          }
+
+          & .horizontal {
+            width: 100%;
+            height: 24px;
+            border-bottom: 4px solid #333;
+          }
+        }
+      }
+    }
+
+    & .paw-container {
+      width: 75px;
+      height: 50px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      top: -96px;
+
+      & .top-paw {
+        width: 45px;
+        height: 15px;
+        background: #666;
+        clip-path: polygon(0 100%, 10% 0, 90% 0, 100% 100%);
+      }
+
+      & .bottom-paw {
+        width: 75px;
+        height: 25px;
+        background: linear-gradient(to bottom, #555 0 10px, #777 10px);
+        clip-path: polygon(0 25%, 15% 0, 85% 0, 100% 25%, 100% 100%, 0 100%);
+      }
+    }
+  }
+}
+
+@keyframes shoot {
+  85%,
+  100% {
+    transform: translateX(0);
+  }
+
+  90%,
+  92% {
+    transform: translateX(35px);
+  }
+}
+
+@keyframes laserShow {
+  0%,
+  85%,
+  91% {
+    opacity: 0;
+  }
+
+  85%,
+  90% {
+    opacity: 1;
+  }
+}
+
+.foot-1 {
+  --foot-rotate: 5deg;
+  --knee-rotate: calc(var(--foot-rotate) * -1);
+}
+
+.foot-2 {
+  --foot-rotate: 45deg;
+  --knee-rotate: calc(var(--foot-rotate) * -1);
+}
+
+.foot-3 {
+  --foot-rotate: 15deg;
+  --knee-rotate: calc(var(--foot-rotate) * -1);
+}
+
+.foot-4 {
+  --foot-rotate: -15deg;
+  --knee-rotate: calc(var(--foot-rotate) * -1);
+}
